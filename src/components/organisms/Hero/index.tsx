@@ -31,7 +31,6 @@ const Hero: FC<HeroProps> = ({}) => {
           alt="/images/hero.png"
           width={501}
           height={710}
-          objectFit="contain"
         />
       </div>
     </div>

@@ -17,7 +17,7 @@ const FeaturedJobs: FC<FeaturedJobsProps> = ({}) => {
             totalJobs: 2000,
           }}
           desc="Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi, autem."
-          image="/images/job1.png"
+          image="/images/jobox.png"
           jobType="Full time"
           location="Jakarta, Indonesia"
           name="UI/UX Designer"

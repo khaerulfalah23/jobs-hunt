@@ -30,7 +30,7 @@ const JobItem: FC<JobItemProps> = ({
         </div>
         <div
           className="text-muted-foreground h-12 line-clamp-2 text-ellipsis"
-          dangerouslySetInnerHTML={{ __html: desc }}
+          dangerouslySetInnerHTML={{ __html: desc || '' }}
         ></div>
       </div>
       <div className="space-x-2">
