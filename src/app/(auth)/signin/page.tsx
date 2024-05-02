@@ -9,13 +9,16 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { formSignInSchema } from '@/lib/form-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
-import React, { FC } from 'react';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
 import { useForm } from 'react-hook-form';
+import { signIn } from 'next-auth/react';
+import { Input } from '@/components/ui/input';
+import { FC } from 'react';
 import { z } from 'zod';
+import Link from 'next/link';
 
 interface SignInPageProps {}
 
@@ -24,8 +27,25 @@ const SignInPage: FC<SignInPageProps> = ({}) => {
     resolver: zodResolver(formSignInSchema),
   });
 
+  const { toast } = useToast();
+  const router = useRouter();
+
   const onSubmit = async (val: z.infer<typeof formSignInSchema>) => {
-    console.log(val);
+    const authenticated = await signIn('credentials', {
+      ...val,
+      redirect: false,
+    });
+
+    if (authenticated?.error) {
+      toast({
+        title: 'Error',
+        description: 'Email or password maybe wrong',
+      });
+
+      return;
+    }
+
+    router.push('/');
   };
 
   return (
