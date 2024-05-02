@@ -16,7 +16,6 @@ import Link from 'next/link';
 import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { signIn } from 'next-auth/react';
 
 interface SignInPageProps {}
 
