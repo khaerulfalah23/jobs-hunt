@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { NextAuthOptions } from 'next-auth';
+import { categoryJobType } from '@/types';
 import { twMerge } from 'tailwind-merge';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
@@ -32,6 +33,24 @@ export async function fetcher<JSON = any>(
 
   return res.json() as Promise<JSON>;
 }
+
+export const parsingCategories = (
+  data: any,
+  isLoading: boolean,
+  error: any
+) => {
+  if (!isLoading && !error && data) {
+    return data.map((item: any) => {
+      return {
+        id: item.id,
+        name: item.name,
+        totalJobs: item._count.Job,
+      };
+    }) as categoryJobType[];
+  }
+
+  return [];
+};
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
