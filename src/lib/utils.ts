@@ -6,6 +6,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import prisma from '../../lib/prisma';
 import { supabasePublicUrl } from './supabase';
+import dayjs from 'dayjs';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -208,4 +209,11 @@ export const parsingCompanies = async (
   }
 
   return [];
+};
+
+export const dateFormat = (
+  date: Date | string,
+  format: string = 'DD MMM YYYY'
+) => {
+  return dayjs(date).format(format);
 };
