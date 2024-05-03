@@ -4,6 +4,7 @@ import '../globals.css';
 import Navbar from '@/components/layouts/Navbar';
 import Footer from '@/components/layouts/Footer';
 import AuthProvider from '@/providers/AuthProvider';
+import { Toaster } from '@/components/ui/toaster';
 
 const epilogue = Epilogue({ subsets: ['latin-ext'] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
           <Navbar />
           <main>{children}</main>
           <Footer />
+          <Toaster />
         </AuthProvider>
       </body>
     </html>

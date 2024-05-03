@@ -1,10 +1,11 @@
 import { type ClassValue, clsx } from 'clsx';
 import { NextAuthOptions } from 'next-auth';
-import { categoryJobType } from '@/types';
+import { JobType, categoryJobType, optionType } from '@/types';
 import { twMerge } from 'tailwind-merge';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import prisma from '../../lib/prisma';
+import { supabasePublicUrl } from './supabase';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -107,4 +108,61 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+};
+
+export const parsingCategoriesToOptions = (
+  data: any,
+  isLoading: boolean,
+  error: any,
+  isIndustry?: boolean
+) => {
+  if (!isLoading && !error && data) {
+    return data.map((item: any) => {
+      return {
+        id: isIndustry ? item.name : item.id,
+        label: item.name,
+      } as optionType;
+    }) as optionType[];
+  }
+
+  return [];
+};
+
+export const parsingJobs = async (
+  data: any,
+  isLoading: boolean,
+  error: any
+) => {
+  if (!isLoading && !error && data) {
+    return await Promise.all(
+      data.map(async (item: any) => {
+        let imageName = item.Company?.Companyoverview[0]?.image;
+        let imageUrl;
+
+        if (imageName) {
+          imageUrl = await supabasePublicUrl(imageName, 'company');
+        } else {
+          imageUrl = '/images/company.png';
+        }
+
+        const job: JobType = {
+          id: item.id,
+          name: item.roles,
+          applicants: item.applicants,
+          category: item.CategoryJob,
+          desc: item.description,
+          jobType: item.jobType,
+          image: imageUrl,
+          location: item.Company?.Companyoverview[0]?.location,
+          needs: item.needs,
+          type: item.CategoryJob.name,
+          skills: item.requiredSkills,
+        };
+
+        return job;
+      })
+    );
+  }
+
+  return [];
 };
