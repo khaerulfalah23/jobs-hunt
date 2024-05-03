@@ -11,7 +11,7 @@ import prisma from "../../../../../../lib/prisma";
 import { supabasePublicUrl } from "@/lib/supabase";
 import { dateFormat } from "@/lib/utils";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import authOptions from '@/app/api/auth/[...nextauth]/options';
 
 async function getDetailJob(id: string) {
 	const session = await getServerSession(authOptions);
