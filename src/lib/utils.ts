@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { NextAuthOptions } from 'next-auth';
-import { JobType, categoryJobType, optionType } from '@/types';
+import { CompanyType, JobType, categoryJobType, optionType } from '@/types';
 import { twMerge } from 'tailwind-merge';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
@@ -160,6 +160,49 @@ export const parsingJobs = async (
         };
 
         return job;
+      })
+    );
+  }
+
+  return [];
+};
+
+export const parsingCompanies = async (
+  data: any,
+  isLoading: boolean,
+  error: any
+) => {
+  if (!isLoading && !error && data) {
+    return await Promise.all(
+      data.map(async (item: any) => {
+        let imageName = item.Companyoverview[0]?.image;
+        let imageUrl;
+
+        if (imageName) {
+          imageUrl = await supabasePublicUrl(imageName, 'company');
+        } else {
+          imageUrl = '/images/company.png';
+        }
+
+        const companyDetail = item.Companyoverview[0];
+
+        const company: CompanyType = {
+          id: item.id,
+          name: companyDetail?.name,
+          image: imageUrl,
+          dateFounded: companyDetail?.dateFounded,
+          description: companyDetail?.description,
+          employee: companyDetail?.employee,
+          industry: companyDetail?.industry,
+          location: companyDetail?.location,
+          techStack: companyDetail?.techStack,
+          website: companyDetail?.website,
+          sosmed: item.CompanySocialMedia[0],
+          teams: item?.CompanyTeam,
+          totalJobs: item._count.Job,
+        };
+
+        return company;
       })
     );
   }
