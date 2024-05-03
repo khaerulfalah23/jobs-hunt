@@ -40,9 +40,9 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: '/signin',
+    signIn: '/auth/signin',
     error: '/auth/error',
-    newUser: '/signup',
+    newUser: '/auth/signup',
   },
   callbacks: {
     jwt({ token, account, user }) {
